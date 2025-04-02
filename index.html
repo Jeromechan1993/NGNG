@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>蔚哥牛逼</title>
+    <style>
+        /* 移动端优化 */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .text-box {
+            position: relative;
+            font-size: 10vw;
+            font-weight: bold;
+            text-align: center;
+            transform: translateZ(0);
+        }
+
+        .text-box span {
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        /* 颜色优化（微信色域兼容） */
+        .text-box span:nth-child(1) { animation-delay: 0.1s; color: #00B7FF; } /* 微信蓝 */
+        .text-box span:nth-child(2) { animation-delay: 0.2s; color: #07C160; } /* 微信绿 */
+        .text-box span:nth-child(3) { animation-delay: 0.3s; color: #FFBE00; } /* 微信黄 */
+        .text-box span:nth-child(4) { animation-delay: 0.4s; color: #FA5151; } /* 微信红 */
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+                text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            }
+            50% {
+                transform: translateY(-15px);
+                text-shadow: 0 0 20px currentColor,
+                             0 0 30px rgba(255,255,255,0.8);
+            }
+        }
+
+        /* 性能优化版粒子效果 */
+        .particles::before {
+            content: '';
+            position: absolute;
+            width: 150vw;
+            height: 150vh;
+            background: 
+                radial-gradient(circle at 70% 20%, rgba(0,183,255,0.2) 0%, transparent 50%),
+                radial-gradient(circle at 30% 80%, rgba(7,193,96,0.2) 0%, transparent 50%);
+            animation: particleMove 8s linear infinite;
+        }
+
+        @keyframes particleMove {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+    <div class="text-box">
+        <span>蔚</span>
+        <span>哥</span>
+        <span>牛</span>
+        <span>逼</span>
+    </div>
+
+    <!-- 微信分享兼容脚本 -->
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script>
+        // 禁止下拉刷新
+        document.body.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // 微信分享配置（需要服务端支持）
+        wx.config({
+            debug: false,
+            appId: '', // 需要填写你的appId
+            timestamp: , // 需要填写你的timestamp
+            nonceStr: '', // 需要填写你的nonceStr
+            signature: '', // 需要填写你的signature
+            jsApiList: ['updateAppMessageShareData']
+        });
+
+        wx.ready(function() {
+            wx.updateAppMessageShareData({
+                title: '蔚哥牛逼特效',
+                desc: '点击查看炫酷文字动画',
+                link: window.location.href,
+                imgUrl: 'https://example.com/thumbnail.jpg' // 需要替换为实际图片地址
+            });
+        });
+    </script>
+</body>
+</html>
